@@ -83,8 +83,9 @@ class _LoginPageState extends State<LoginPage> {
         child: InkWell(
           onTap: () {
             signInWithGoogle().whenComplete(() {
-              Navigator.of(context).pushReplacementNamed('/home ');
-              setState(() {});
+              Navigator.pushReplacementNamed(context, '/home');
+
+              // setState(() {});
             });
           },
           child: Padding(

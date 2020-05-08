@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/const/color_const.dart';
-
+import 'package:humanitarian_icons/humanitarian_icons.dart';
+import 'package:undraw/undraw.dart';
 
 class HomePageUsr extends StatefulWidget {
   HomePageUsr({Key key}) : super(key: key);
@@ -20,214 +21,168 @@ class HomePageUsrState extends State<HomePageUsr> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Scaffold(
       body: Container(
-        color: backgroundColor,
         child: Column(
           children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(40),
-                  constraints: BoxConstraints.expand(height: 200),
-                  decoration: BoxDecoration(
-                      gradient: new LinearGradient(
-                          colors: [lightBlueIsh,accentColor],
-                          begin: const FractionalOffset(1.0, 1.0),
-                          end: const FractionalOffset(0.2, 0.2),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Welcome Back',
-                          style: titleStyleWhite,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Center(
-                    child: Container(
-                        margin: EdgeInsets.only(top: 100),
-                        constraints:
-                            BoxConstraints.expand(height: 200, width: 250),
-                        child: getprofileCard())),
-                // Container(
-                //   height: 330,
-                //   margin: EdgeInsets.only(top: 300),
-                //   padding: EdgeInsets.all(20),
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: <Widget>[
-                //       Container(
-                //         margin: EdgeInsets.only(top: 40),
-                //         child: Text(
-                //           "Explore New Opportunities",
-                //           style: titileStyleBlack,
-                //           ),
-                //       ),
-                //       Container(
-                //         height: 280,
-                //         child: ListView(
-                //           children: getJobCategories(),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // )
-              ],
-            )
+            Container(
+              height: height * 0.3,
+              width: width,
+              child: UnDraw(
+                width: width,
+                color: accentColor,
+                illustration: UnDrawIllustration.medicine,
+                placeholder: CircularProgressIndicator(),
+                errorWidget:
+                    Icon(Icons.error_outline, color: Colors.red, size: 50),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            newPatient(height, width),
+            SizedBox(
+              height: height * 0.03,
+            ),
+            existPatient(height, width),
+            SizedBox(
+              height: height * 0.05,
+            ),
           ],
         ),
       ),
     );
   }
 
-  List<String> jobCategories = [
-    "Sales",
-    "Engineering",
-    "Health",
-    "Education",
-    "Finance"
-  ];
+  Widget newPatient(double height, double width) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+      height: height * 0.13,
+      width: width,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 10,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            //border: Border.all(color: Colors.deepOrange),
+            borderRadius: BorderRadius.circular(10.0),
+            // gradient: LinearGradient(
+            //     begin: Alignment.topLeft,
+            //     end: Alignment.bottomRight,
+            //     colors: [Colors.deepOrange[200], Colors.deepOrange[50]]),
+          ),
+          child: Material(
+            type: MaterialType.transparency,
+            elevation: 6.0,
+            color: Colors.transparent,
+            shadowColor: Colors.grey[50],
+            child: InkWell(
+              splashColor: Colors.deepOrange[100],
+              onTap: () {
+                Navigator.pushNamed(context, '/newpat');
+              },
+              child: ListTile(
+                leading: Image.asset('assets/logo/newpat.png'),
+                title: Text(
+                  'New Patient',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(
+                  children: <Widget>[
+                    Divider(),
+                    Text('Setup a New Patient Account')
+                  ],
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.deepOrange,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-  // Map jobCatToIcon = {
-  //   "Sales" : Icon(Icons.monetization_on, color: lightBlueIsh, size: 50,),
-  //   "Engineering" : Icon(Icons.settings, color: lightBlueIsh, size: 50),
-  //   "Health" : Icon(Icons.healing, color: lightBlueIsh, size: 50),
-  //   "Education" : Icon(Icons.search, color: lightBlueIsh, size: 50),
-  //   "Finance" : Icon(Icons.card_membership, color: lightBlueIsh, size: 50),
-  // };
-
-  // Widget getCategoryContainer(String categoryName) {
-  //   return new Container(
-  //         margin: EdgeInsets.only(right: 10, left: 10, bottom: 20),
-  //         height: 180,
-  //         width: 140,
-  //         padding: EdgeInsets.all(10),
-  //         decoration: BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.all(Radius.circular(15)),
-  //           boxShadow: [
-  //             new BoxShadow(
-  //               color: Colors.grey,
-  //               blurRadius: 10.0,
-  //             ),
-  //           ],
-  //         ),
-  //         child: Column(
-  //           children: <Widget>[
-  //             Text(categoryName, style: titileStyleLighterBlack),
-  //             Container(
-  //               padding: EdgeInsets.only(top: 20),
-  //               height: 80,
-  //               width: 70,
-  //               child: RaisedButton(
-
-  //                 child:  jobCatToIcon[categoryName],
-  //                 elevation: 10,
-  //                 onPressed: () {
-
-  //                 },
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       );
+  existPatient(double height, double width) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: width * 0.05),
+      height: height * 0.13,
+      width: width,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 10,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            //   border: Border.all(color: Colors.deepPurple),
+            borderRadius: BorderRadius.circular(10.0),
+            // gradient: LinearGradient(
+            //     begin: Alignment.topLeft,
+            //     end: Alignment.bottomRight,
+            //     colors: [Colors.deepPurple[200], Colors.deepPurple[50]]),
+          ),
+          child: Material(
+            type: MaterialType.transparency,
+            elevation: 6.0,
+            color: Colors.transparent,
+            shadowColor: Colors.grey[50],
+            child: InkWell(
+              splashColor: Colors.deepPurple[100],
+              onTap: () {
+                //Navigator.pushReplacementNamed(context, '/agent');
+              },
+              child: ListTile(
+                leading: Image.asset('assets/logo/existpat.png'),
+                title: Text(
+                  'Existing Patient',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(children: <Widget>[
+                  Divider(),
+                  Text('Search for a patient, Add Health Updates'),
+                ]),
+                isThreeLine: true,
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.deepPurple,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-// List<Widget> getJobCategories() {
-//   List<Widget> jobCategoriesCards = [];
-//   List<Widget> rows = [];
-//   int i = 0;
-//   for (String category in jobCategories) {
-//     if (i < 2) {
-//       rows.add(getCategoryContainer(category));
-//       i ++;
-//     } else {
-//       i = 0;
-//       jobCategoriesCards.add(new Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: rows,
-//       ));
-//       rows = [];
-//       rows.add(getCategoryContainer(category));
-//       i++;
-//     }
-//   }
-//   if (rows.length > 0) {
-//     jobCategoriesCards.add(new Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//         children: rows,
-//       ));
-//   }
-//   return jobCategoriesCards;
-// }
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height - 60);
+    var fcontrol = Offset(size.width * 0.25, size.height - 20);
+    var fend = Offset(size.width * 0.5, size.height - 10);
+    path.quadraticBezierTo(fcontrol.dx, fcontrol.dy, fend.dx, fend.dy);
 
-// List<Job> findJobs() {
-//   List<Job> jobs = [];
-//   for (int i = 0; i < 10; i++) {
-//     jobs.add(new Job("Volvo", "Frontend Developer", 20000, "Remote", "Part time", new AssetImage("assets/logo/volvo.png")));
-//   }
-//   return jobs;
-// }
+    var scontrol = Offset(size.width * 0.75, size.height - 20);
+    var send = Offset(size.width, size.height - 60);
+    path.quadraticBezierTo(scontrol.dx, scontrol.dy, send.dx, send.dy);
+    path.lineTo(size.width, size.height - 60);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
 
-// String makeSalaryToK(double salary) {
-//   String money = "";
-//   if (salary > 1000) {
-//     if (salary > 100000000) {
-//       salary = salary/100000000;
-//       money = salary.toInt().toString() + "M";
-//     } else {
-//       salary = salary/1000;
-//       money = salary.toInt().toString() + "K";
-//     }
-//   } else {
-//     money = salary.toInt().toString();
-//   }
-//   return "\$" + money;
-// }
-
-Widget getprofileCard() {
-  return Container(
-    padding: EdgeInsets.all(10),
-    margin: EdgeInsets.only(right: 20, bottom: 30, top: 30),
-    height: 150,
-    width: 200,
-    decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          new BoxShadow(
-            color: Colors.grey,
-            blurRadius: 20.0,
-          ),
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(15))),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            CircleAvatar(
-              child: Image.asset("assets/logo/volvo.png"),
-            ),
-            Text(
-              'Name',
-              style: jobCardTitileStyleBlue,
-            )
-          ],
-        ),
-        Text('Design', style: jobCardTitileStyleBlack),
-      ],
-    ),
-  );
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
 }

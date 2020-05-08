@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:health_care/src/home/HomePageUsr.dart';
 import 'package:health_care/src/home/HelpPage.dart';
 import 'package:health_care/src/home/ProfilePage.dart';
-
-import 'forms/UserForm.dart';
 
 class App extends StatefulWidget {
   AppState createState() {
@@ -21,18 +18,14 @@ class AppState extends State<App> {
   List<Widget> screens = [
     HomePageUsr(key: PageStorageKey("HomePageUsr")),
     //Locations(key: PageStorageKey("Locations")),
-    UserForm(key: PageStorageKey("UserForm")),
+    HelpPage(key: PageStorageKey("HelpPage")),
     // MyOrders(user),
     ProfilePage(key: PageStorageKey("ProfilePage")),
   ];
 
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
+ 
 
   int bottomNavBarIndex = 0;
-  int pageControllerIndex = 0;
 
   void pageChanged(int index) {
     setState(() {
@@ -40,38 +33,29 @@ class AppState extends State<App> {
     });
   }
 
-  void bottomTapped(int index) {
-    setState(() {
-      pageControllerIndex = index;
-      pageController.animateToPage(index,
-          duration: Duration(milliseconds: 10), curve: Curves.linear);
-    });
-  }
+  
 
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: PageView(
-          controller: pageController,
-          onPageChanged: (index) => pageChanged(index),
-          children: screens,
-        ),
+       
+        body: screens[bottomNavBarIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
           elevation: 10,
           showUnselectedLabels: true,
           selectedItemColor: Colors.green[600],
-          unselectedItemColor: Colors.lightGreen[200],
+          unselectedItemColor: Colors.blueGrey[400],
           type: BottomNavigationBarType.fixed,
           unselectedIconTheme: IconThemeData(
-            color: Colors.lightGreen[100],
+            color: Colors.grey[400],
             opacity: 1.0,
           ),
           selectedIconTheme: IconThemeData(
             color: Colors.green[600],
             opacity: 1.0,
           ),
-          onTap: (index) => bottomTapped(index),
+          onTap: (index) => pageChanged(index),
           currentIndex: bottomNavBarIndex,
           items: [
             BottomNavigationBarItem(
