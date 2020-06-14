@@ -27,14 +27,11 @@ dependencies:
   google_sign_in: ^4.1.4
   cloud_firestore: ^0.13.4+2
   rxdart: ^0.24.0
-  humanitarian_icons: ^0.1.0
-  undraw: ^1.0.2
   sk_onboarding_screen: ^1.0.1
   shared_preferences: ^0.5.7
-  moceansdk: ^1.2.0
-  flutter_svg: ^0.13.1
-
-
+  intl: ^0.16.1
+  http: ^0.12.1
+  firebase_messaging: ^6.0.16
 
 dev_dependencies:
   flutter_test:

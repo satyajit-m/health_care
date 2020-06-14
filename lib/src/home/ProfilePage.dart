@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/auth/SignIn.dart';
+import 'package:health_care/src/forms/AgentCall.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key}) : super(key: key);
@@ -29,18 +30,27 @@ class ProfilePageState extends State<ProfilePage> {
     // TODO: implement build
     return Scaffold(
       body: Container(
-        child: Column(
-          children: <Widget>[
-            load == true ? CircularProgressIndicator() : Text(email),
-            RaisedButton(
-              onPressed: () {
-                signOutGoogle().whenComplete(() {
-                  Navigator.pushReplacementNamed(context, '/');
-                });
-              },
-              child: Text('SignOut'),
-            )
-          ],
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              load == true ? CircularProgressIndicator() : Text(email),
+              RaisedButton(
+                onPressed: () {
+                  signOutGoogle().whenComplete(() {
+                    Navigator.pushReplacementNamed(context, '/');
+                  });
+                },
+                child: Text('SignOut'),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AgentCall()));
+                },
+                child: Text('Form'),
+              ),
+            ],
+          ),
         ),
       ),
     );

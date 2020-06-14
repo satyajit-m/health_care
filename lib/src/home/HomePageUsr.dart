@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_care/clips/HomeClip.dart';
 import 'package:health_care/const/color_const.dart';
-import 'package:humanitarian_icons/humanitarian_icons.dart';
-import 'package:undraw/undraw.dart';
+import 'package:health_care/src/forms/AgentCall.dart';
+import 'package:health_care/src/forms/AgentForm.dart';
 
 class HomePageUsr extends StatefulWidget {
   HomePageUsr({Key key}) : super(key: key);
+
+  static const routeName = '/home';
 
   @override
   HomePageUsrState createState() => HomePageUsrState();
@@ -25,35 +29,47 @@ class HomePageUsrState extends State<HomePageUsr> {
     double height = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: height * 0.3,
-              width: width,
-              child: UnDraw(
-                width: width,
-                color: accentColor,
-                illustration: UnDrawIllustration.medicine,
-                placeholder: CircularProgressIndicator(),
-                errorWidget:
-                    Icon(Icons.error_outline, color: Colors.red, size: 50),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            newPatient(height, width),
-            SizedBox(
-              height: height * 0.03,
-            ),
-            existPatient(height, width),
-            SizedBox(
-              height: height * 0.05,
-            ),
-          ],
+      body: Stack(children: <Widget>[
+        ClipPath(
+          clipper: HomeClip(),
+          child: Container(
+            color: lightGreen,
+          ),
         ),
-      ),
+        Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey[200],
+                  ),
+                  borderRadius:
+                      BorderRadius.vertical(bottom: Radius.circular(20)),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        'assets/img/doctor3.png',
+                      )),
+                ),
+                height: height * 0.3,
+                width: width,
+              ),
+              SizedBox(
+                height: height * 0.05,
+              ),
+              newPatient(height, width),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              existPatient(height, width),
+              SizedBox(
+                height: height * 0.05,
+              ),
+            ],
+          ),
+        ),
+      ]),
     );
   }
 
@@ -84,7 +100,8 @@ class HomePageUsrState extends State<HomePageUsr> {
             child: InkWell(
               splashColor: Colors.deepOrange[100],
               onTap: () {
-                Navigator.pushNamed(context, '/newpat');
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AgentCall()));
               },
               child: ListTile(
                 leading: Image.asset('assets/logo/newpat.png'),

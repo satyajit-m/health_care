@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/src/App.dart';
+import 'package:health_care/src/forms/AgentCall.dart';
 
 import 'SignIn.dart';
 
@@ -13,8 +15,13 @@ class _LoginPageState extends State<LoginPage> {
   FirebaseUser user;
   bool load = true;
 
-  _LoginPageState() {
-    getUser();
+  _LoginPageState() {}
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => Future(() {
+          getUser();
+        }));
   }
 
   @override
@@ -24,9 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
         body: load == true
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? Center(child: CircularProgressIndicator())
             : (Container(
                 color: Colors.white,
                 child: Center(
@@ -82,10 +87,25 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.white,
         child: InkWell(
           onTap: () {
-            signInWithGoogle().whenComplete(() {
-              Navigator.pushReplacementNamed(context, '/home');
-
-              // setState(() {});
+            this.setState(() {
+              load = true;
+            });
+            signInWithGoogle().whenComplete(() async {
+              FirebaseUser user = await FirebaseAuth.instance.currentUser();
+              var email = user.email;
+              final snapShot = await Firestore.instance
+                  .collection('admin')
+                  .document(email)
+                  .get();
+              this.setState(() {
+                load = false;
+              });
+              if (snapShot == null) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AgentCall()));
+              } else {
+                Navigator.pushReplacementNamed(context, '/home');
+              }
             });
           },
           child: Padding(
@@ -122,15 +142,20 @@ class _LoginPageState extends State<LoginPage> {
 
   void getUser() async {
     user = await FirebaseAuth.instance.currentUser();
-    print(user);
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (user != null) {
-        Navigator.pushReplacementNamed(context, '/home');
+    var email = user.email;
+    final snapShot =
+        await Firestore.instance.collection('admin').document(email).get();
+    if (user != null) {
+      if (!snapShot.exists) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => AgentCall()));
       } else {
-        setState(() {
-          load = false;
-        });
+        Navigator.pushReplacementNamed(context, '/home');
       }
-    });
+    } else {
+      setState(() {
+        load = false;
+      });
+    }
   }
 }

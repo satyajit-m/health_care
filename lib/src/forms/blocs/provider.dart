@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'bloc.dart';
+import 'firestore_provider.dart';
 
 class Provider extends InheritedWidget {
+
   final bloc = Bloc();
 
   Provider({Key key, Widget child}) : super(key: key, child: child);
@@ -14,4 +16,6 @@ class Provider extends InheritedWidget {
     //* and performs the type conversion to Provider through "as Provider" and then access the Provider's bloc instance variable
     return (context.inheritFromWidgetOfExactType(Provider) as Provider).bloc;
   }
+
+
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/OnBoard.dart';
 import 'package:health_care/auth/LoginPage.dart';
+import 'package:health_care/push_notifications.dart';
 import 'package:health_care/src/App.dart';
 import 'package:health_care/src/forms/AgentCall.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,9 +17,10 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // MyApp() {
-  //   //Navigation.initPaths();
-  // }
+  MyApp() {
+    PushNotificationsManager push = new PushNotificationsManager();
+    push.init();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,7 +39,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         '/home': (context) => App(),
         '/newpat': (context) => AgentCall(),
-       
       },
     );
   }
