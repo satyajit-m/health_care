@@ -1,27 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/clips/HomeClip.dart';
 import 'package:health_care/const/color_const.dart';
-import 'package:health_care/src/forms/AgentCall.dart';
-import 'package:health_care/src/forms/AgentForm.dart';
+import 'package:health_care/const/route_constants.dart';
+import 'package:health_care/services/router_models.dart';
 
-class HomePageUsr extends StatefulWidget {
-  HomePageUsr({Key key}) : super(key: key);
+class HomePageAgent extends StatefulWidget {
+  HomePageAgent({Key key}) : super(key: key);
 
   static const routeName = '/home';
 
   @override
-  HomePageUsrState createState() => HomePageUsrState();
+  HomePageAgentState createState() => HomePageAgentState();
 }
 
-class HomePageUsrState extends State<HomePageUsr> {
+class HomePageAgentState extends State<HomePageAgent> {
   //var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void dispose() {
     super.dispose();
   }
 
-  HomePageUsrState() {}
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  HomePageAgentState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class HomePageUsrState extends State<HomePageUsr> {
     double height = MediaQuery.of(context).size.height;
     // TODO: implement build
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(children: <Widget>[
         ClipPath(
           clipper: HomeClip(),
@@ -36,44 +40,69 @@ class HomePageUsrState extends State<HomePageUsr> {
             color: lightGreen,
           ),
         ),
-        Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey[200],
-                  ),
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(20)),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        'assets/img/doctor3.png',
-                      )),
-                ),
-                height: height * 0.3,
-                width: width,
-              ),
-              SizedBox(
-                height: height * 0.05,
-              ),
-              newPatient(height, width),
-              SizedBox(
-                height: height * 0.03,
-              ),
-              existPatient(height, width),
-              SizedBox(
-                height: height * 0.05,
-              ),
-            ],
-          ),
-        ),
+        FutureBuilder(
+            future: getEmail(),
+            builder: (context, projectSnap) {
+              if (projectSnap.connectionState == ConnectionState.none &&
+                  projectSnap.hasData == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return StreamBuilder(
+                stream: Firestore.instance
+                    .collection('admin')
+                    .document(projectSnap.data)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Container(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey[200],
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                                bottom: Radius.circular(20)),
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: AssetImage(
+                                  'assets/img/doctor3.png',
+                                )),
+                          ),
+                          height: height * 0.3,
+                          width: width,
+                        ),
+                        SizedBox(
+                          height: height * 0.05,
+                        ),
+                        newPatient(height, width, snapshot),
+                        SizedBox(
+                          height: height * 0.03,
+                        ),
+                        existPatient(height, width, snapshot),
+                        SizedBox(
+                          height: height * 0.05,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
       ]),
     );
   }
 
-  Widget newPatient(double height, double width) {
+  Widget newPatient(double height, double width, AsyncSnapshot snapshot) {
+    var userDoc = snapshot.data;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: width * 0.05),
       height: height * 0.13,
@@ -100,8 +129,11 @@ class HomePageUsrState extends State<HomePageUsr> {
             child: InkWell(
               splashColor: Colors.deepOrange[100],
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AgentCall()));
+                if (userDoc.data['verified'] == false) {
+                  showInSnackBar('User Not Verified');
+                } else {
+                  Navigator.pushNamed(context, NewPatRoute);
+                }
               },
               child: ListTile(
                 leading: Image.asset('assets/logo/newpat.png'),
@@ -127,7 +159,9 @@ class HomePageUsrState extends State<HomePageUsr> {
     );
   }
 
-  existPatient(double height, double width) {
+  existPatient(double height, double width, AsyncSnapshot snapshot) {
+    var userDoc = snapshot.data;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: width * 0.05),
       height: height * 0.13,
@@ -154,7 +188,10 @@ class HomePageUsrState extends State<HomePageUsr> {
             child: InkWell(
               splashColor: Colors.deepPurple[100],
               onTap: () {
-                //Navigator.pushReplacementNamed(context, '/agent');
+                if (userDoc.data['verified'] == false) {
+                  showInSnackBar('User Not Verified');
+                } else {}
+                Navigator.pushNamed(context, ExistPatRoute);
               },
               child: ListTile(
                 leading: Image.asset('assets/logo/existpat.png'),
@@ -177,6 +214,21 @@ class HomePageUsrState extends State<HomePageUsr> {
         ),
       ),
     );
+  }
+
+  Future getEmail() async {
+    final auth = FirebaseAuth.instance;
+    var user = await auth.currentUser();
+    return user.email;
+  }
+
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(value),
+      elevation: 10,
+      backgroundColor: Colors.red[400],
+      duration: Duration(seconds: 3),
+    ));
   }
 }
 

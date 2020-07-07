@@ -1,52 +1,85 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 class UserProf {
+  final Personal personal;
+  final Address address;
+  final Identity id;
+  final bool verified;
+
+  //Map<String, String> address;
+
+  UserProf({this.personal, this.address, this.id, this.verified});
+
+  factory UserProf.fromMap(DocumentSnapshot data) {
+    data = data ?? {};
+
+    return UserProf(
+        personal: Personal.fromMap(data['personal']) ?? '',
+        address: Address.fromMap(data['address']) ?? '',
+        id: Identity.fromMap(data['identification']) ?? '',
+        verified: data['verified']);
+  }
+}
+
+class Personal {
   String name;
+  String email;
   String phone;
   String dob;
   String gender;
-  String idType;
-  String idNum;
-  //Map<String, String> address;
 
-  UserProf(
-      this.name, this.phone, this.dob, this.gender, this.idType, this.idNum);
+  Personal({this.name, this.email, this.phone, this.dob, this.gender});
 
-  UserProf.fromMap(Map snapshot) {
-    name = snapshot['name'] ?? '';
-    phone = snapshot['phone'] ?? '';
-    dob = snapshot['dob'] ?? '';
-    gender = snapshot['gender'] ?? '';
-    idType = snapshot['idType'] ?? '';
-    idNum = snapshot['idNum'] ?? '';
-    //name = snapshot['name'] ?? '';
+  factory Personal.fromMap(Map<String, dynamic> data) {
+    data = data ?? '';
+
+    return Personal(
+        name: data['name'],
+        email: data['email'],
+        phone: data['phone'],
+        dob: data['dob'],
+        gender: data['gender']);
   }
+}
 
-  toJson() {
-    return {
-      'name': name,
-      'phone': phone,
-      'dob': dob,
-      'gender': gender,
-      'idType': idType,
-      'idNum': idNum,
-      //'address': address,
-    };
+class Address {
+  String area;
+  String block;
+  String city;
+  String district;
+  String state;
+  String pincode;
+
+  Address(
+      {this.area,
+      this.block,
+      this.city,
+      this.district,
+      this.state,
+      this.pincode});
+
+  factory Address.fromMap(Map<String, dynamic> data) {
+    data = data ?? '';
+
+    return Address(
+        area: data['area'],
+        block: data['block'],
+        city: data['city'],
+        district: data['district'],
+        state: data['state'],
+        pincode: data['pincode']);
   }
+}
 
-  // set _name(String _name) {
-  //   this.name = _name;
-  // }
+class Identity {
+  String gid;
 
-  // set name(String name){
-  //   this._name = name;
-  // }
+  Identity({this.gid});
 
-  // set salary(double salary){
-  //   this._salary = salary;
-  // }
+  factory Identity.fromMap(Map<String, dynamic> data) {
+    data = data ?? '';
 
-  // int get id => this._id;
-
-  // String get _name => this.name;
-
-  // double get salary => this._salary;
+    return Identity(gid: data['gid']);
+  }
 }

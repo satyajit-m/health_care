@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/const/color_const.dart';
+import 'package:health_care/const/route_constants.dart';
 import 'package:health_care/core/functions/Dialog.dart';
 import 'package:health_care/src/forms/AreaApi/AreaModel.dart';
-import 'blocs/bloc.dart';
-import 'blocs/provider.dart';
+import 'package:health_care/src/forms/AreaApi/Repository.dart';
+import 'package:health_care/src/forms/blocs/bloc.dart';
+import 'package:health_care/src/forms/blocs/provider.dart';
 import 'package:intl/intl.dart';
-import './AreaApi/Repository.dart';
 
 class AgentForm extends StatefulWidget {
   AgentForm() {}
@@ -51,13 +52,6 @@ class _AgentFormState extends State<AgentForm> {
     }
     if (currentStep + 1 != length) {
       goTo(currentStep + 1);
-    } else {
-      setState(() => complete = true);
-    }
-    if (currentStep == 2) {
-      setState(() {
-        finalSubmit = true;
-      });
     }
   }
 
@@ -76,7 +70,7 @@ class _AgentFormState extends State<AgentForm> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1920),
-      lastDate: DateTime.now().subtract(Duration(days: 2)),
+      lastDate: DateTime.now(),
     );
     if (d != null) //if the user has selected a date
       setState(() {
@@ -176,15 +170,18 @@ class _AgentFormState extends State<AgentForm> {
                           // Scaffold.of(context).showSnackBar(
                           //     SnackBar(content: Text('Data Upload Success')));
                           // Navigator.pop(context);
-                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                            content: new Text('Account Details Updated'),
-                            backgroundColor: Colors.green,
-                          ));
-                          Future.delayed(Duration(seconds: 3), () {
-                            Navigator.pop(context);
-                          });
 
-                          return SizedBox();
+                          return Column(
+                            children: <Widget>[
+                              Text('Data Upload Success'),
+                              RaisedButton(
+                                  color: Colors.orange,
+                                  child: Text('Proceed'),
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(context, AgentHomeRoute);
+                                  }),
+                            ],
+                          );
                         } else {
                           return Center(
                             child: CircularProgressIndicator(),
@@ -269,6 +266,7 @@ class _AgentFormState extends State<AgentForm> {
                 builder: (context, snapshot) {
                   return TextField(
                     controller: dateCtl,
+                    showCursor: false,
                     onTap: () {
                       _selectDate(context, bloc);
                     },
@@ -496,16 +494,23 @@ class _AgentFormState extends State<AgentForm> {
   void callArea(String pin) async {
     area = ['Select Area'];
     Map<String, dynamic> adr = await fetchArea(pin);
-    List<AreaModel> area1 = adr['ar'].toList();
-    for (var i in area1) {
-      area.add(i.name.toString());
+    print(adr.length);
+    if (adr.length>0) {
+      List<AreaModel> area1 = adr['ar'].toList();
+      for (var i in area1) {
+        area.add(i.name.toString());
+      }
+      blockCtl.text = adr['block'].toString();
+      divCtl.text = adr['divison'].toString();
+      distCtl.text = adr['district'].toString();
+      stateCtl.text = adr['state'].toString();
     }
-    blockCtl.text = adr['block'].toString();
-    divCtl.text = adr['divison'].toString();
-    distCtl.text = adr['district'].toString();
-    stateCtl.text = adr['state'].toString();
-    Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+        Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
 
+    if(adr.length == 0){
+      showAlertDialog(context);
+    }
+    
     //close the dialoge
     setState(() {
       fetchAdr = 1;
@@ -526,13 +531,15 @@ class _AgentFormState extends State<AgentForm> {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pop(context);
+      },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("My title"),
-      content: Text("This is my message."),
+      title: Text("Invalid PinCode"),
+      content: Text("The Pin you have ented is Invalid"),
       actions: [
         okButton,
       ],

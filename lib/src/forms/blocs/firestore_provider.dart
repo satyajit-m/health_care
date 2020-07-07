@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:health_care/core/models/UserProf.dart';
 
 class FirestoreProvider {
   Firestore _firestore = Firestore.instance;
 
-  Future<void> uploadAgent(List<Map<String, String>> data) async {
+  Future<void> uploadAgent(
+      List<Map<String, String>> data, String col, String doc) async {
     DocumentReference documentReference =
-        _firestore.collection('admin').document(data[0]['email']);
+        _firestore.collection(col).document(doc);
     return _firestore.runTransaction((transaction) async {
       await transaction.set(documentReference, {
         'personal': data[0],
@@ -20,4 +22,5 @@ class FirestoreProvider {
       return false;
     });
   }
+
 }

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 
-import 'package:health_care/src/home/HomePageUsr.dart';
-import 'package:health_care/src/home/HelpPage.dart';
-import 'package:health_care/src/home/ProfilePage.dart';
+import 'home_patient/help_page_pat.dart';
+import 'home_patient/home_page_pat.dart';
+import 'home_patient/profile_page_pat.dart';
 
-class App extends StatefulWidget {
- 
-  AppState createState() {
-    return AppState();
+class PatApp extends StatefulWidget {
+  PatAppState createState() {
+    return PatAppState();
   }
 }
 
-class AppState extends State<App> {
+class PatAppState extends State<PatApp> {
   void initState() {
     super.initState();
   }
 
   List<Widget> screens = [
-    HomePageUsr(key: PageStorageKey("HomePageUsr")),
+    HomePagePat(key: PageStorageKey("HomePagePat")),
     //Locations(key: PageStorageKey("Locations")),
-    HelpPage(key: PageStorageKey("HelpPage")),
+    HelpPagePat(key: PageStorageKey("HelpPagePat")),
     // MyOrders(user),
-    ProfilePage(key: PageStorageKey("ProfilePage")),
+    ProfilePagePat(key: PageStorageKey("ProfilePagePat")),
   ];
-
- 
 
   int bottomNavBarIndex = 0;
 
@@ -34,12 +31,9 @@ class AppState extends State<App> {
     });
   }
 
-  
-
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-       
         body: screens[bottomNavBarIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,

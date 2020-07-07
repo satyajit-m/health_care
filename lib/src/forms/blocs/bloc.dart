@@ -27,6 +27,8 @@ class Bloc extends Object with Validators {
   //NOTE: Dart StreamController doesn't have such functionality
   final _nameController = BehaviorSubject<String>();
   final _emailController = BehaviorSubject<String>();
+  final _emailPatController = BehaviorSubject<String>();
+
   final _phoneController = BehaviorSubject<String>();
   final _dateController = BehaviorSubject<String>();
   final _genderController = BehaviorSubject<String>();
@@ -45,12 +47,17 @@ class Bloc extends Object with Validators {
   //id
   final _gIdController = BehaviorSubject<String>();
 
+  final _patIdController = BehaviorSubject<String>();
+
   //Add Data To Stream
   Stream<String> get name => _nameController.stream.transform(validateName);
   Stream<String> get email => _emailController.stream;
+  Stream<String> get patemail =>
+      _emailPatController.stream.transform(validateEmail);
   Stream<String> get phone => _phoneController.stream.transform(validatePhone);
-  Stream<String> get date => _dateController.stream;
-  Stream<String> get gender => _genderController.stream;
+  Stream<String> get date => _dateController.stream.transform(validateDOB);
+  Stream<String> get gender =>
+      _genderController.stream.transform(validateGender);
 
   Stream<String> get pin => _pinController.stream.transform(validatePin);
   Stream<String> get area => _areaController.stream;
@@ -60,15 +67,20 @@ class Bloc extends Object with Validators {
   Stream<String> get state => _stateController.stream;
 
   Stream<String> get gId => _gIdController.stream.transform(validateGID);
+  Stream<String> get patId => _patIdController.stream.transform(validatePatID);
 
   Stream<bool> get showProgress => _showProgress.stream;
 
   Stream<bool> get firstSubmit =>
-      Rx.combineLatest2(name, phone, (n, p) => true);
+      Rx.combineLatest4(name, phone, date, gender, (a, b, c, d) => true);
+
+  Stream<bool> get firstPatSubmit => Rx.combineLatest5(
+      name, phone, patemail, date, gender, (a, b, c, d, e) => true);
 
   //change data
   Function(String) get changeName => _nameController.sink.add;
   Function(String) get changeEmail => _emailController.sink.add;
+  Function(String) get changePatEmail => _emailPatController.sink.add;
   Function(String) get changePhone => _phoneController.sink.add;
   Function(String) get changeDate => _dateController.sink.add;
   Function(String) get changeGender => _genderController.sink.add;
@@ -81,6 +93,7 @@ class Bloc extends Object with Validators {
   Function(String) get changeState => _stateController.sink.add;
 
   Function(String) get changeGID => _gIdController.sink.add;
+  Function(String) get changePatID => _patIdController.sink.add;
 
   Bloc() {
     getEmail();
@@ -103,7 +116,7 @@ class Bloc extends Object with Validators {
   // }
 
   void submit() async {
-      _showProgress.sink.add(true);
+    _showProgress.sink.add(true);
     var data = new List<Map<String, String>>();
     data.add({
       'name': _nameController.value,
@@ -123,10 +136,41 @@ class Bloc extends Object with Validators {
 
     data.add({'gid': _gIdController.value});
 
-    await _repo.uploadAgent(data).then((value) {}).whenComplete(() {
+    await _repo
+        .uploadAgent(data, 'admin', data[0]['email'])
+        .then((value) {})
+        .whenComplete(() {
       _showProgress.sink.add(false);
     });
-    
+  }
+
+  void submitPat() async {
+    _showProgress.sink.add(true);
+    var data = new List<Map<String, String>>();
+    data.add({
+      'name': _nameController.value,
+      'phone': '+91' + _phoneController.value,
+      'email': _emailPatController.value,
+      'dob': _dateController.value,
+      'gender': _genderController.value
+    });
+    data.add({
+      'pincode': _pinController.value,
+      'area': _areaController.value,
+      'block': _blockController.value,
+      'city': _cityController.value,
+      'district': _districtController.value,
+      'state': _stateController.value
+    });
+
+    data.add({'gid': _patIdController.value});
+
+    await _repo
+        .uploadAgent(data, 'users', data[0]['phone'])
+        .then((value) {})
+        .whenComplete(() {
+      _showProgress.sink.add(false);
+    });
   }
 
   Future insert() async {}

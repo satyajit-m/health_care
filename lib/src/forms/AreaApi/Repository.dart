@@ -11,11 +11,9 @@ Future<Map<String, dynamic>> fetchArea(String pin) async {
   final jsonresponse = json.decode(response.body);
 
   List<AreaModel> area = [];
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
 
-    Map<String, dynamic> parsedJson = jsonresponse[0];
+  Map<String, dynamic> parsedJson = jsonresponse[0];
+  if (parsedJson['Status'] == 'Success') {
     var list = parsedJson['PostOffice'] as List;
 
     for (var u in list) {
@@ -33,6 +31,8 @@ Future<Map<String, dynamic>> fetchArea(String pin) async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
+    return addr;
+
     throw Exception('Failed to load Area');
   }
 

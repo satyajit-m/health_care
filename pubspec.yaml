@@ -32,6 +32,9 @@ dependencies:
   intl: ^0.16.1
   http: ^0.12.1
   firebase_messaging: ^6.0.16
+  google_fonts: ^1.1.0
+  flappy_search_bar: ^1.7.2
+  flutter_picker: ^1.1.5
 
 dev_dependencies:
   flutter_test:

@@ -29,6 +29,27 @@ class Validators {
     }
   });
 
+  final validateDOB =
+      StreamTransformer<String, String>.fromHandlers(handleData: (dob, sink) {
+    if (dob.toString().length>8) {
+      print(dob);
+
+      sink.add(dob);
+    } else {
+      sink.addError('Please select dob');
+    }
+  });
+
+  final validateGender = StreamTransformer<String, String>.fromHandlers(
+      handleData: (gender, sink) {
+    if (gender.isNotEmpty) {
+      print(gender);
+      sink.add(gender);
+    } else {
+      sink.addError('Please Select Gender');
+    }
+  });
+
   final validatePin =
       StreamTransformer<String, String>.fromHandlers(handleData: (pin, sink) {
     if (pin.length == 6) {
@@ -44,6 +65,14 @@ class Validators {
       sink.add(gID);
     } else {
       sink.addError('Please enter 10digit ID number');
+    }
+  });
+   final validatePatID =
+      StreamTransformer<String, String>.fromHandlers(handleData: (gID, sink) {
+    if (gID.length == 12) {
+      sink.add(gID);
+    } else {
+      sink.addError('Please enter 12digit UID number');
     }
   });
 }

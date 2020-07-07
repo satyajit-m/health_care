@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_care/const/color_const.dart';
+import 'package:health_care/const/route_constants.dart';
 import 'package:sk_onboarding_screen/sk_onboarding_model.dart';
 import 'package:sk_onboarding_screen/sk_onboarding_screen.dart';
 
@@ -38,10 +39,10 @@ class _OnBoardState extends State<OnBoard> {
         themeColor: primaryColor,
         pages: pages,
         skipClicked: (value) {
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushReplacementNamed(context, LoginRoute);
         },
         getStartedClicked: (value) {
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushReplacementNamed(context, LoginRoute);
         },
       ),
     );

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:health_care/OnBoard.dart';
-import 'package:health_care/auth/LoginPage.dart';
+import 'package:health_care/const/route_constants.dart';
 import 'package:health_care/push_notifications.dart';
-import 'package:health_care/src/App.dart';
-import 'package:health_care/src/forms/AgentCall.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import './services/router.dart' as router;
 int initScreen;
 
 Future<void> main() async {
@@ -31,15 +29,10 @@ class MyApp extends StatelessWidget {
       ),
       //onGenerateRoute: Navigation.router.generator,
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: router.Router.generateRoute,
 
-      initialRoute: initScreen == 0 || initScreen == null ? "first" : "/",
+      initialRoute: initScreen == 0 || initScreen == null ? OnBoardRoute : LoginRoute,
 
-      routes: {
-        'first': (context) => OnBoard(),
-        '/': (context) => LoginPage(),
-        '/home': (context) => App(),
-        '/newpat': (context) => AgentCall(),
-      },
     );
   }
 }
