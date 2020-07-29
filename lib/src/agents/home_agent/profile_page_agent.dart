@@ -29,10 +29,12 @@ class ProfilePageAgentState extends State<ProfilePageAgent> {
     // TODO: implement build
     return Scaffold(
         body: Stack(children: <Widget>[
-      ClipPath(
-        clipper: CustomClipPath(),
-        child: Container(
-          color: lightBlueIsh,
+      Container(
+        child: ClipPath(
+          clipper: CustomClipPath(),
+          child: Container(
+            color: lightBlueIsh,
+          ),
         ),
       ),
       Container(
@@ -56,6 +58,8 @@ class ProfilePageAgentState extends State<ProfilePageAgent> {
                     UserProf prof = UserProf.fromMap(snapshot.data);
 
                     return ListView(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
                       children: <Widget>[
                         SizedBox(
                           height: SizeConfig.screenHeight * 0.08,

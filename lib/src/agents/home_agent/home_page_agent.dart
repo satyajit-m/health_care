@@ -190,8 +190,9 @@ class HomePageAgentState extends State<HomePageAgent> {
               onTap: () {
                 if (userDoc.data['verified'] == false) {
                   showInSnackBar('User Not Verified');
-                } else {}
-                Navigator.pushNamed(context, ExistPatRoute);
+                } else {
+                  Navigator.pushNamed(context, ExistPatRoute);
+                }
               },
               child: ListTile(
                 leading: Image.asset('assets/logo/existpat.png'),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_care/const/color_const.dart';
+import 'package:health_care/const/route_constants.dart';
 import 'package:health_care/const/size_config.dart';
 import 'package:health_care/core/models/UserProf.dart';
+import 'package:health_care/src/agents/exist_patient/pat_history.dart';
 
 class PatientView extends StatefulWidget {
   final UserProf prof;
@@ -21,29 +23,94 @@ class _PatientViewState extends State<PatientView> {
         child: ListView(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: RawMaterialButton(
-                    elevation: 10.0,
-                    child: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    constraints: BoxConstraints.tightFor(
-                      width: 40.0,
-                      height: 40.0,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RawMaterialButton(
+                          elevation: 0.0,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: darkGreen,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          constraints: BoxConstraints.tightFor(
+                            width: 40.0,
+                            height: 40.0,
+                          ),
+                          shape: CircleBorder(),
+                          fillColor: Colors.white24),
                     ),
-                    shape: CircleBorder(),
-                    fillColor: Colors.white),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Patient Dashboard',
+                        style: GoogleFonts.roboto(
+                            fontSize: 25, fontWeight: FontWeight.w400),
+                      ),
+                    )
+                  ],
+                )),
+            SizedBox(
+              height: 15,
+            ),
+            Card(
+              margin: EdgeInsets.symmetric(horizontal: 15),
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.deepOrange[300], width: 1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Material(
+                type: MaterialType.transparency,
+                elevation: 6.0,
+                color: Colors.transparent,
+                shadowColor: Colors.grey[50],
+                child: Material(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.deepOrange, width: 1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  color: Colors.deepOrange[300],
+                  child: InkWell(
+                    splashColor: Colors.white,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(ExistAddRoute,
+                          arguments: widget.prof.personal.phone);
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.playlist_add,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Add New Helth Update',
+                        style: GoogleFonts.sourceSansPro(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(
               height: 15,
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal:10.0),
               child: Card(
+                margin: EdgeInsets.symmetric(horizontal: 15),
                 elevation: 8,
                 shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.green, width: 1),
@@ -56,41 +123,31 @@ class _PatientViewState extends State<PatientView> {
               ),
             ),
             SizedBox(
-              height: 15,
+              height: 25,
             ),
-            Card(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.indigo, width: 1),
-                borderRadius: BorderRadius.circular(8),
+            Divider(
+              height: 2,
+            ),
+            Container(
+              color: Colors.indigo,
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 1,
+                      child: Icon(
+                        Icons.history,
+                        color: Colors.white,
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: Text('Previous Health Updates',
+                          style: GoogleFonts.sourceSansPro(
+                              fontSize: 20, color: Colors.white))),
+                ],
               ),
-              child: Material(
-                type: MaterialType.transparency,
-                elevation: 6.0,
-                color: Colors.transparent,
-                shadowColor: Colors.grey[50],
-                child: InkWell(
-                  splashColor: Colors.indigo[100],
-                  onTap: () {},
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.playlist_add,
-                      color: Colors.indigo,
-                    ),
-                    title: Text(
-                      'Proceed To Questionnaire',
-                      style: GoogleFonts.sourceSansPro(
-                          color: Colors.indigo, fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.indigo,
-                    ),
-                  ),
-                ),
-              ),
-            )
+            ),
+            patHistory(context, widget.prof.personal.phone)
           ],
         ),
       ),

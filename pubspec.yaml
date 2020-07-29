@@ -35,6 +35,12 @@ dependencies:
   google_fonts: ^1.1.0
   flappy_search_bar: ^1.7.2
   flutter_picker: ^1.1.5
+  animated_text_kit: ^2.2.0
+  shimmer: ^1.0.0
+  connectivity_wrapper: ^1.0.3
+
+
+
 
 dev_dependencies:
   flutter_test:

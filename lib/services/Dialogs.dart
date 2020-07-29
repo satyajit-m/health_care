@@ -11,7 +11,7 @@ class ProgressDialog {
               onWillPop: () async => false,
               child: SimpleDialog(
                   key: key,
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: Colors.white.withOpacity(0.0),
                   children: <Widget>[
                     Center(
                       child: CircularProgressIndicator(),

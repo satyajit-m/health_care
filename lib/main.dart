@@ -1,3 +1,4 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care/const/route_constants.dart';
 import 'package:health_care/push_notifications.dart';
@@ -21,18 +22,20 @@ class MyApp extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        accentColor: Color(0xFF52DA75),
-        primaryColor: Color(0xFF32C96C),
-        iconTheme: IconThemeData(color: Color(0xFF32C96C)),
+    return ConnectivityAppWrapper(
+          app: MaterialApp(
+        theme: ThemeData(
+          accentColor: Color(0xFF52DA75),
+          primaryColor: Color(0xFF32C96C),
+          iconTheme: IconThemeData(color: Color(0xFF32C96C)),
+        ),
+        //onGenerateRoute: Navigation.router.generator,
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: router.Router.generateRoute,
+
+        initialRoute: initScreen == 0 || initScreen == null ? OnBoardRoute : LoginRoute,
+
       ),
-      //onGenerateRoute: Navigation.router.generator,
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: router.Router.generateRoute,
-
-      initialRoute: initScreen == 0 || initScreen == null ? OnBoardRoute : LoginRoute,
-
     );
   }
 }

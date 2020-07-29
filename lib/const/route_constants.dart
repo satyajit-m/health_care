@@ -15,6 +15,9 @@ const String AgentProfileRoute = '/agentprofile';
 const String NewPatRoute = '/newpat';
 const String ExistPatRoute = '/existpat';
 const String PatientViewRoute = '/patview';
+const String ExistAddRoute = '/existadd';
+const String PatHisDetRoute = '/pathisdet';
+
 
 //Patients
 const String PatHomeRoute = '/pathome';

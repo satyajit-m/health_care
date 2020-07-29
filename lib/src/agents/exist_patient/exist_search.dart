@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:health_care/const/color_const.dart';
 import 'package:health_care/const/route_constants.dart';
 import 'package:health_care/const/size_config.dart';
 import 'package:health_care/core/models/UserProf.dart';
@@ -35,20 +37,36 @@ class _ExistSearchState extends State<ExistSearch> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: RawMaterialButton(
-                      elevation: 10.0,
-                      child: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      constraints: BoxConstraints.tightFor(
-                        width: 40.0,
-                        height: 40.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RawMaterialButton(
+                          elevation: 0.0,
+                          child: Icon(Icons.arrow_back_ios,color: darkGreen,),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          constraints: BoxConstraints.tightFor(
+                            width: 40.0,
+                            height: 40.0,
+                          ),
+                          shape: CircleBorder(),
+                          fillColor: Colors.white24),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        'Patient Search',
+                        style: GoogleFonts.roboto(
+                            fontSize: 25, fontWeight: FontWeight.w400),
                       ),
-                      shape: CircleBorder(),
-                      fillColor: Colors.white),
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 15,

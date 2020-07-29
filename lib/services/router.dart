@@ -6,7 +6,9 @@ import 'package:health_care/auth/patient/phone/otp_page.dart';
 import 'package:health_care/auth/patient/phone/phone_auth.dart';
 import 'package:health_care/services/router_models.dart';
 import 'package:health_care/src/agents/agent_app.dart';
+import 'package:health_care/src/agents/exist_patient/exist_add.dart';
 import 'package:health_care/src/agents/exist_patient/exist_search.dart';
+import 'package:health_care/src/agents/exist_patient/pat_his_details.dart';
 import 'package:health_care/src/agents/exist_patient/patient_view.dart';
 import 'package:health_care/src/agents/new_agent/AgentCall.dart';
 import 'package:health_care/src/agents/new_patient/new_patcall.dart';
@@ -74,6 +76,18 @@ class Router {
         return MaterialPageRoute(
             builder: (_) => PatientView(
                   prof: settings.arguments,
+                ));
+
+      case '/existadd':
+        return MaterialPageRoute(
+            builder: (_) => ExistPatAdd(
+                  phone: settings.arguments,
+                ));
+
+      case '/pathisdet':
+        return MaterialPageRoute(
+            builder: (_) => PatHisDetails(
+                  model: settings.arguments,
                 ));
 
       //Patients

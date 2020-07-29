@@ -68,19 +68,43 @@ TextStyle profileContent = GoogleFonts.ptSans(
   fontSize: 16,
 );
 
-TextStyle covidHead = GoogleFonts.lato(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.white);
+//Covid Total Odisha
+TextStyle odTotal = GoogleFonts.lato(
+    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepOrange[400]);
+TextStyle odActive = GoogleFonts.lato(
+    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.red);
+TextStyle odRecovered = GoogleFonts.lato(
+    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.green);
+TextStyle odDeceased = GoogleFonts.lato(
+    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.blueGrey);
+TextStyle odDelta = GoogleFonts.lato(fontSize: 12, color: Colors.grey[600]);
+TextStyle odHead = GoogleFonts.lato(
+    fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
+TextStyle odUpdated = GoogleFonts.lato(
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+    color: Colors.purple,
+    fontStyle: FontStyle.italic);
 
+//Covid Dists Wise
+TextStyle covidHead = GoogleFonts.lato(
+    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black);
 
+TextStyle covidDists =
+    GoogleFonts.lato(fontSize: 15, color: Colors.indigoAccent);
 
-TextStyle covidDists = GoogleFonts.lato(fontSize: 15,color: Colors.indigoAccent);
+TextStyle covidTotal =
+    GoogleFonts.lato(fontSize: 15, color: Colors.deepOrange[400]);
+TextStyle covidActive = GoogleFonts.lato(fontSize: 15, color: Colors.red);
 
-TextStyle covidTotal = GoogleFonts.lato(fontSize: 15,color: Colors.orangeAccent);
-TextStyle covidActive = GoogleFonts.lato(fontSize: 15,color: Colors.red);
+TextStyle covidRecov = GoogleFonts.lato(fontSize: 15, color: Colors.green);
+TextStyle covidDeceas = GoogleFonts.lato(fontSize: 15, color: Colors.grey);
 
-TextStyle covidRecov = GoogleFonts.lato(fontSize: 15,color: Colors.green);
-TextStyle covidDeceas = GoogleFonts.lato(fontSize: 15,color: Colors.grey);
+TextStyle detHead = GoogleFonts.lato(
+    fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo[600]);
 
-
+TextStyle subHead = GoogleFonts.lato(
+    fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black);
 
 //Phone Login
 const Color phoneLoginIcon = Colors.deepPurple;
@@ -89,3 +113,5 @@ const Color phoneLoginText = Colors.deepPurple;
 //Icons
 Icon cancelRedIcon = Icon(Icons.cancel, color: Colors.redAccent);
 Icon verifiedGreenIcon = Icon(Icons.verified_user, color: Colors.green);
+
+String intMsg = 'No Internet Connection';
