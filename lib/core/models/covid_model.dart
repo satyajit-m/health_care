@@ -9,7 +9,7 @@ class CovidModel {
     today = CovidToday.fromMap(odisha['delta']);
     var listDist = odisha['districts'];
     listDist.forEach((k, v) {
-      if (k == "Others" || k == "Unknown") {
+      if (k == "Others" || k == "Unknown" || k== "State Pool") {
       } else {
         CovidDists covidDists = new CovidDists.fromMap(k, v);
         covidDists.active =
@@ -19,7 +19,7 @@ class CovidModel {
         dists.add(covidDists);
       }
     });
-    dists.sort((a, b) => (b.confirmed).compareTo(a.confirmed));
+    dists.sort((a, b) => (b.active).compareTo(a.active));
 
     total = CovidTotal.fromMap(odisha['total']);
     updAt = odisha['meta']['last_updated'];
